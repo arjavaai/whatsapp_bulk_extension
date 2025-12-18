@@ -17,9 +17,26 @@
     <div class="form-group">
       <div class="label-row">
         <label>Phone Numbers</label>
-        <button id="contactsBtn" class="btn-contacts">📋 Contacts</button>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <label class="toggle-container" style="margin: 0;">
+            <input type="checkbox" id="personalizeToggle">
+            <span class="toggle-label">🎯 Personalize</span>
+          </label>
+          <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+          <button id="importCsvBtn" class="btn-contacts">📂 Import CSV</button>
+          <button id="contactsBtn" class="btn-contacts">📋 Contacts</button>
+        </div>
       </div>
       <textarea id="phoneNumbers" placeholder="+919876543210&#10;+918765432109"></textarea>
+      <div id="personalizeHelp" class="help-text" style="display: none;">
+        💡 <strong>Personalization Mode:</strong> Add data after phone number separated by commas.<br>
+        Example: <code>+919876543210,John,101</code><br>
+        Then use in message: <code>Hi {name}, order #{orderId} ready!</code>
+      </div>
+      <div id="csvInfo" class="csv-info" style="display: none;">
+        📊 <strong>CSV Imported!</strong> <span id="csvStats"></span><br>
+        <strong>Available variables:</strong> <span id="csvVariables"></span>
+      </div>
     </div>
 
     <!-- Contact List Dropdown -->
@@ -47,6 +64,10 @@
         <div class="form-group">
           <label>Phone Numbers (one per line)</label>
           <textarea id="listNumbers" rows="5" placeholder="+919876543210&#10;+918765432109"></textarea>
+          <div style="font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 4px;">
+            💡 Tip: Save personalized data too! e.g., <code
+              style="font-size: 9px; background: rgba(255,255,255,0.1); padding: 1px 3px; border-radius: 2px;">+91XXX,Name,OrderID</code>
+          </div>
         </div>
         <button id="saveListBtn" class="btn-save">💾 Save List</button>
       </div>

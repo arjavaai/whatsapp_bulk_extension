@@ -1,6 +1,9 @@
 // Popup script with Contact Lists feature
 let isRunning = false;
 let contactLists = {};
+let isPersonalizationEnabled = false;
+let csvHeaders = []; // Store column names from CSV
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const startBtn = document.getElementById('startBtn');
@@ -27,8 +30,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const listNumbersInput = document.getElementById('listNumbers');
     const saveListBtn = document.getElementById('saveListBtn');
 
+    // Personalization Elements
+    const personalizeToggle = document.getElementById('personalizeToggle');
+    const personalizeHelp = document.getElementById('personalizeHelp');
+
+    // CSV Import Elements
+    const csvFileInput = document.getElementById('csvFileInput');
+    const importCsvBtn = document.getElementById('importCsvBtn');
+    const csvInfo = document.getElementById('csvInfo');
+    const csvStats = document.getElementById('csvStats');
+    const csvVariables = document.getElementById('csvVariables');
+
     // Load saved data
-    chrome.storage.local.get(['phoneNumbers', 'message', 'minDelay', 'maxDelay', 'contactLists'], (data) => {
+    chrome.storage.local.get(['phoneNumbers', 'message', 'minDelay', 'maxDelay', 'contactLists', 'personalizationEnabled'], (data) => {
         if (data.phoneNumbers) phoneNumbersInput.value = data.phoneNumbers;
         if (data.message) messageInput.value = data.message;
         if (data.minDelay) minDelayInput.value = data.minDelay;
@@ -36,6 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.contactLists) {
             contactLists = data.contactLists;
             renderContactsList();
+        }
+        if (data.personalizationEnabled) {
+            personalizeToggle.checked = true;
+            isPersonalizationEnabled = true;
+            personalizeHelp.style.display = 'block';
         }
     });
 
@@ -52,6 +71,103 @@ document.addEventListener('DOMContentLoaded', () => {
     maxDelayInput.addEventListener('input', () => {
         chrome.storage.local.set({ maxDelay: maxDelayInput.value });
     });
+
+    // Personalization Toggle
+    personalizeToggle.addEventListener('change', () => {
+        isPersonalizationEnabled = personalizeToggle.checked;
+        personalizeHelp.style.display = isPersonalizationEnabled ? 'block' : 'none';
+        chrome.storage.local.set({ personalizationEnabled: isPersonalizationEnabled });
+
+        // Update placeholder based on mode
+        if (isPersonalizationEnabled) {
+            phoneNumbersInput.placeholder = '+919876543210,John,101\n+918765432109,Jane,102';
+        } else {
+            phoneNumbersInput.placeholder = '+919876543210\n+918765432109';
+        }
+    });
+
+    // CSV Import
+    importCsvBtn.addEventListener('click', () => {
+        csvFileInput.click();
+    });
+
+    csvFileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        try {
+            const text = await file.text();
+            const lines = text.trim().split('\n');
+
+            if (lines.length < 2) {
+                alert('CSV must have at least a header row and one data row!');
+                return;
+            }
+
+            // Parse header (first row)
+            const headerRow = lines[0].trim();
+            csvHeaders = parseCSVLine(headerRow);
+
+            // Parse data rows
+            const dataRows = [];
+            for (let i = 1; i < lines.length; i++) {
+                const row = parseCSVLine(lines[i].trim());
+                if (row.length > 0 && row[0]) { // Ensure phone number exists
+                    dataRows.push(row.join(','));
+                }
+            }
+
+            // Fill textarea with data (without headers)
+            phoneNumbersInput.value = dataRows.join('\n');
+
+            // Auto-enable personalization
+            personalizeToggle.checked = true;
+            isPersonalizationEnabled = true;
+            personalizeHelp.style.display = 'block';
+            chrome.storage.local.set({ personalizationEnabled: true });
+
+            // Show CSV info
+            csvStats.textContent = `${dataRows.length} contacts`;
+            const variableNames = csvHeaders.slice(1).map(h => `{${h}}`).join(', ');
+            csvVariables.innerHTML = variableNames.split(', ').map(v =>
+                `<code>${v}</code>`
+            ).join(' ');
+            csvInfo.style.display = 'block';
+
+            // Save data
+            chrome.storage.local.set({ phoneNumbers: phoneNumbersInput.value });
+
+        } catch (error) {
+            alert('Error reading CSV file. Please check the format!');
+            console.error(error);
+        }
+
+        // Clear file input for re-import
+        csvFileInput.value = '';
+    });
+
+    // Helper function to parse CSV line (handles commas in quotes)
+    function parseCSVLine(line) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+
+            if (char === '"') {
+                inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+                result.push(current.trim());
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+
+        result.push(current.trim());
+        return result;
+    }
 
     // Contacts Panel Toggle
     contactsBtn.addEventListener('click', () => {
@@ -138,12 +254,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Start Sending
     startBtn.addEventListener('click', async () => {
-        const phoneNumbers = phoneNumbersInput.value.trim().split('\n').filter(num => num.trim());
+        const rawLines = phoneNumbersInput.value.trim().split('\n').filter(num => num.trim());
         const message = messageInput.value.trim();
         const minDelay = parseInt(minDelayInput.value);
         const maxDelay = parseInt(maxDelayInput.value);
 
-        if (phoneNumbers.length === 0) {
+        if (rawLines.length === 0) {
             showError('Please enter at least one phone number');
             return;
         }
@@ -158,6 +274,55 @@ document.addEventListener('DOMContentLoaded', () => {
         if (minDelay > maxDelay) {
             showError('Min delay cannot exceed max delay');
             return;
+        }
+
+        // Parse data based on personalization mode
+        let contactsData = [];
+        if (isPersonalizationEnabled) {
+            // If CSV was imported, use CSV headers as variable names
+            // Otherwise, extract variable names from message
+            let variableNames = [];
+
+            if (csvHeaders.length > 1) {
+                // Use CSV headers (skip first column which is phone number)
+                variableNames = csvHeaders.slice(1);
+            } else {
+                // Extract from message template
+                const variableMatches = message.match(/\{([^}]+)\}/g);
+                variableNames = variableMatches ? variableMatches.map(v => v.slice(1, -1)) : [];
+            }
+
+            for (const line of rawLines) {
+                const parts = line.split(',').map(p => p.trim());
+                const phoneNumber = parts[0];
+
+                if (!phoneNumber) continue;
+
+                // Build variables object using CSV headers or template variables
+                const variables = {};
+                if (csvHeaders.length > 1) {
+                    // Map data to CSV column names
+                    variableNames.forEach((varName, index) => {
+                        variables[varName] = parts[index + 1] || '';
+                    });
+                } else {
+                    // Old method: extract from message and match by position
+                    variableNames.forEach((varName, index) => {
+                        variables[varName] = parts[index + 1] || '';
+                    });
+                }
+
+                contactsData.push({
+                    phoneNumber: phoneNumber,
+                    variables: variables
+                });
+            }
+        } else {
+            // Simple mode - just phone numbers
+            contactsData = rawLines.map(line => ({
+                phoneNumber: line.trim(),
+                variables: {}
+            }));
         }
 
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -177,10 +342,11 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await chrome.tabs.sendMessage(tab.id, {
                 action: 'startSending',
-                phoneNumbers: phoneNumbers,
-                message: message,
+                contactsData: contactsData,
+                messageTemplate: message,
                 minDelay: minDelay * 1000,
-                maxDelay: maxDelay * 1000
+                maxDelay: maxDelay * 1000,
+                isPersonalized: isPersonalizationEnabled
             });
             setTimeout(() => window.close(), 500);
         } catch (error) {

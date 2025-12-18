@@ -384,3 +384,100 @@ header h1 {
 .log-time {
   color: #666;
 }
+
+/* Personalization Toggle */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-container input[type="checkbox"] {
+  appearance: none;
+  width: 40px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggle-container input[type="checkbox"]:checked {
+  background: #25D366;
+}
+
+.toggle-container input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-container input[type="checkbox"]:checked::before {
+  transform: translateX(20px);
+}
+
+.toggle-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Help Text */
+.help-text {
+  background: rgba(37, 211, 102, 0.15);
+  border-left: 3px solid #25D366;
+  padding: 8px 10px;
+  margin-top: 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.help-text code {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  color: #fff;
+}
+
+.help-text strong {
+  color: #25D366;
+}
+
+/* CSV Info Box */
+.csv-info {
+  background: rgba(33, 150, 243, 0.15);
+  border-left: 3px solid #2196F3;
+  padding: 8px 10px;
+  margin-top: 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.csv-info code {
+  background: rgba(33, 150, 243, 0.2);
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  color: #fff;
+}
+
+.csv-info strong {
+  color: #64B5F6;
+}

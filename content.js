@@ -7,7 +7,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'startSending') {
         shouldStop = false;
         isRunning = false;
-        startSendingMessages(request.phoneNumbers, request.message, request.minDelay, request.maxDelay);
+        startSendingMessages(
+            request.contactsData,
+            request.messageTemplate,
+            request.minDelay,
+            request.maxDelay,
+            request.isPersonalized
+        );
         sendResponse({ status: 'started' });
     } else if (request.action === 'stopSending') {
         shouldStop = true;
@@ -139,7 +145,7 @@ async function waitForSearchResult(maxWait = 5000) {
 }
 
 
-async function startSendingMessages(phoneNumbers, message, minDelay, maxDelay) {
+async function startSendingMessages(contactsData, messageTemplate, minDelay, maxDelay, isPersonalized) {
     if (isRunning) {
         isRunning = false;
         await sleep(500);
@@ -148,23 +154,34 @@ async function startSendingMessages(phoneNumbers, message, minDelay, maxDelay) {
     isRunning = true;
     createStatusPanel();
 
-    const total = phoneNumbers.length;
+    const total = contactsData.length;
     let successCount = 0;
 
-    for (let i = 0; i < phoneNumbers.length; i++) {
+    for (let i = 0; i < contactsData.length; i++) {
         if (shouldStop) break;
 
-        const cleanNumber = phoneNumbers[i].trim().replace(/[^\d+]/g, '');
+        const contact = contactsData[i];
+        const cleanNumber = contact.phoneNumber.trim().replace(/[^\d+]/g, '');
+
+        // Personalize message if enabled
+        let personalizedMessage = messageTemplate;
+        if (isPersonalized && contact.variables) {
+            // Replace all {varName} with actual values
+            for (const [varName, value] of Object.entries(contact.variables)) {
+                const regex = new RegExp(`\\{${varName}\\}`, 'g');
+                personalizedMessage = personalizedMessage.replace(regex, value);
+            }
+        }
 
         updateStatusPanel(`Sending to ${cleanNumber}...`, i + 1, total);
         log(`${cleanNumber} (${i + 1}/${total})`);
 
         try {
-            await sendToNumber(cleanNumber, message);
+            await sendToNumber(cleanNumber, personalizedMessage);
             successCount++;
             updateStatusPanel(`✓ Sent to ${cleanNumber}`, i + 1, total);
 
-            if (i < phoneNumbers.length - 1 && !shouldStop) {
+            if (i < contactsData.length - 1 && !shouldStop) {
                 const delay = Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
                 updateStatusPanel(`Waiting ${Math.round(delay / 1000)}s...`, i + 1, total);
                 await sleep(delay);
@@ -185,6 +202,7 @@ async function startSendingMessages(phoneNumbers, message, minDelay, maxDelay) {
     // Remove panel after 5 seconds
     setTimeout(removeStatusPanel, 5000);
 }
+
 
 async function sendToNumber(phoneNumber, message) {
     window.focus();
