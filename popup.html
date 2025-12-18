@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WA Auto</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>📱 WA Automator</h1>
+    </header>
+
+    <div class="form-group">
+      <div class="label-row">
+        <label>Phone Numbers</label>
+        <button id="contactsBtn" class="btn-contacts">📋 Contacts</button>
+      </div>
+      <textarea id="phoneNumbers" placeholder="+919876543210&#10;+918765432109"></textarea>
+    </div>
+
+    <!-- Contact List Dropdown -->
+    <div id="contactsPanel" class="contacts-panel" style="display: none;">
+      <div class="contacts-header">
+        <span>Saved Contacts</span>
+        <button id="addContactBtn" class="btn-add">+ New List</button>
+      </div>
+      <div id="contactsList" class="contacts-list">
+        <div class="no-contacts">No saved contacts yet</div>
+      </div>
+    </div>
+
+    <!-- Add Contact Modal -->
+    <div id="addContactModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span>New Contact List</span>
+          <button id="closeModal" class="btn-close">×</button>
+        </div>
+        <div class="form-group">
+          <label>List Name</label>
+          <input type="text" id="listName" placeholder="e.g., Team, Clients, Family">
+        </div>
+        <div class="form-group">
+          <label>Phone Numbers (one per line)</label>
+          <textarea id="listNumbers" rows="5" placeholder="+919876543210&#10;+918765432109"></textarea>
+        </div>
+        <button id="saveListBtn" class="btn-save">💾 Save List</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Message</label>
+      <textarea id="message" rows="3" placeholder="Your message..."></textarea>
+    </div>
+
+    <div class="delay-row">
+      <div class="delay-input">
+        <label>Delay (sec)</label>
+        <div class="range">
+          <input type="number" id="minDelay" value="2" min="1">
+          <span>to</span>
+          <input type="number" id="maxDelay" value="5" min="1">
+        </div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button id="startBtn" class="btn-start">▶ Start</button>
+      <button id="stopBtn" class="btn-stop" disabled>⏹ Stop</button>
+    </div>
+
+    <div id="status" class="status" style="display: none;">
+      <div class="progress-bar">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+      <div class="status-text">
+        <span id="statusMessage">Ready</span>
+        <span id="statusCount">0/0</span>
+      </div>
+    </div>
+
+    <div id="error" class="error" style="display: none;">
+      <span id="errorMessage"></span>
+    </div>
+
+    <button id="toggleDebug" class="btn-debug">Debug Log</button>
+    <div id="debugLog" class="debug-log" style="display: none;"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

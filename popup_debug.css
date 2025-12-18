@@ -1,0 +1,62 @@
+/* Add these to the end of your popup.css */
+
+.debug-section {
+    margin-top: 15px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 10px;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: #718096;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+}
+
+.btn-link:hover {
+    color: #2d3748;
+}
+
+.debug-log {
+    margin-top: 10px;
+    background: #2d3748;
+    color: #00ff00;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 11px;
+    padding: 10px;
+    border-radius: 6px;
+    height: 150px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.log-entry {
+    margin-bottom: 4px;
+    border-bottom: 1px solid #4a5568;
+    padding-bottom: 2px;
+}
+
+.log-time {
+    color: #a0aec0;
+    margin-right: 5px;
+}
+
+.log-info {
+    color: #63b3ed;
+}
+
+.log-success {
+    color: #68d391;
+}
+
+.log-warn {
+    color: #f6e05e;
+}
+
+.log-error {
+    color: #fc8181;
+}
