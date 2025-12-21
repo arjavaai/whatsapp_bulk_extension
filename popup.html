@@ -25,6 +25,7 @@
           <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
           <button id="importCsvBtn" class="btn-contacts">📂 Import CSV</button>
           <button id="contactsBtn" class="btn-contacts">📋 Contacts</button>
+          <button id="blacklistBtn" class="btn-contacts btn-blacklist">🚫 Blacklist</button>
         </div>
       </div>
       <textarea id="phoneNumbers" placeholder="+919876543210&#10;+918765432109"></textarea>
@@ -73,9 +74,78 @@
       </div>
     </div>
 
+    <!-- Blacklist Panel -->
+    <div id="blacklistPanel" class="contacts-panel blacklist-panel" style="display: none;">
+      <div class="contacts-header">
+        <span>🚫 Blacklisted Numbers</span>
+        <button id="addBlacklistBtn" class="btn-add">+ Add Number</button>
+      </div>
+      <div id="blacklistInfo" class="blacklist-info">
+        Numbers in this list will be automatically skipped when sending messages.
+      </div>
+      <div id="blacklistList" class="contacts-list">
+        <div class="no-contacts">No blacklisted numbers yet</div>
+      </div>
+    </div>
+
+    <!-- Add to Blacklist Modal -->
+    <div id="addBlacklistModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span>Add to Blacklist</span>
+          <button id="closeBlacklistModal" class="btn-close">×</button>
+        </div>
+        <div class="form-group">
+          <label>Phone Numbers (one per line)</label>
+          <textarea id="blacklistNumbers" rows="5" placeholder="+919876543210&#10;+918765432109"></textarea>
+          <div style="font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 4px;">
+            💡 These numbers will be skipped automatically during campaigns.
+          </div>
+        </div>
+        <button id="saveBlacklistBtn" class="btn-save btn-save-blacklist">🚫 Add to Blacklist</button>
+      </div>
+    </div>
+
+
     <div class="form-group">
-      <label>Message</label>
+      <div class="label-row">
+        <label>Message</label>
+        <button id="templatesBtn" class="btn-contacts">📝 Templates</button>
+      </div>
       <textarea id="message" rows="3" placeholder="Your message..."></textarea>
+    </div>
+
+    <!-- Templates Panel -->
+    <div id="templatesPanel" class="contacts-panel" style="display: none;">
+      <div class="contacts-header">
+        <span>Saved Templates</span>
+        <button id="addTemplateBtn" class="btn-add">+ New Template</button>
+      </div>
+      <div id="templatesList" class="contacts-list">
+        <div class="no-contacts">No saved templates yet</div>
+      </div>
+    </div>
+
+    <!-- Add Template Modal -->
+    <div id="addTemplateModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span>New Message Template</span>
+          <button id="closeTemplateModal" class="btn-close">×</button>
+        </div>
+        <div class="form-group">
+          <label>Template Name</label>
+          <input type="text" id="templateName" placeholder="e.g., Order Confirmation, Event Invite">
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="templateMessage" rows="4" placeholder="Hi {name}, your order #{orderId} is ready!"></textarea>
+          <div style="font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 4px;">
+            💡 Tip: Use {variables} for personalization!
+          </div>
+        </div>
+        <button id="saveTemplateBtn" class="btn-save">💾 Save Template</button>
+      </div>
     </div>
 
     <div class="delay-row">
@@ -89,8 +159,34 @@
       </div>
     </div>
 
+    <!-- Scheduling Section -->
+    <div class="form-group">
+      <div class="label-row">
+        <label>Scheduling</label>
+        <label class="toggle-container" style="margin: 0;">
+          <input type="checkbox" id="scheduleToggle">
+          <span class="toggle-label">⏰ Schedule</span>
+        </label>
+      </div>
+      <div id="scheduleInputs" style="display: none;">
+        <div class="schedule-row">
+          <div class="schedule-input">
+            <label>Date</label>
+            <input type="date" id="scheduleDate">
+          </div>
+          <div class="schedule-input">
+            <label>Time</label>
+            <input type="time" id="scheduleTime">
+          </div>
+        </div>
+        <div class="help-text" style="margin-top: 6px;">
+          📅 Messages will be sent automatically at the scheduled time
+        </div>
+      </div>
+    </div>
+
     <div class="buttons">
-      <button id="startBtn" class="btn-start">▶ Start</button>
+      <button id="startBtn" class="btn-start">▶ Start Now</button>
       <button id="stopBtn" class="btn-stop" disabled>⏹ Stop</button>
     </div>
 

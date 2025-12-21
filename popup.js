@@ -1,8 +1,12 @@
 // Popup script with Contact Lists feature
 let isRunning = false;
 let contactLists = {};
+let messageTemplates = {}; // Store message templates
+let blacklist = []; // Store blacklisted phone numbers
 let isPersonalizationEnabled = false;
 let csvHeaders = []; // Store column names from CSV
+let isScheduleMode = false;
+let scheduleTimer = null;
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -41,8 +45,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const csvStats = document.getElementById('csvStats');
     const csvVariables = document.getElementById('csvVariables');
 
+    // Template Elements
+    const templatesBtn = document.getElementById('templatesBtn');
+    const templatesPanel = document.getElementById('templatesPanel');
+    const templatesList = document.getElementById('templatesList');
+    const addTemplateBtn = document.getElementById('addTemplateBtn');
+    const addTemplateModal = document.getElementById('addTemplateModal');
+    const closeTemplateModal = document.getElementById('closeTemplateModal');
+    const templateNameInput = document.getElementById('templateName');
+    const templateMessageInput = document.getElementById('templateMessage');
+    const saveTemplateBtn = document.getElementById('saveTemplateBtn');
+
+    // Schedule Elements
+    const scheduleToggle = document.getElementById('scheduleToggle');
+    const scheduleInputs = document.getElementById('scheduleInputs');
+    const scheduleDateInput = document.getElementById('scheduleDate');
+    const scheduleTimeInput = document.getElementById('scheduleTime');
+
+    // Blacklist Elements
+    const blacklistBtn = document.getElementById('blacklistBtn');
+    const blacklistPanel = document.getElementById('blacklistPanel');
+    const blacklistList = document.getElementById('blacklistList');
+    const addBlacklistBtn = document.getElementById('addBlacklistBtn');
+    const addBlacklistModal = document.getElementById('addBlacklistModal');
+    const closeBlacklistModal = document.getElementById('closeBlacklistModal');
+    const blacklistNumbersInput = document.getElementById('blacklistNumbers');
+    const saveBlacklistBtn = document.getElementById('saveBlacklistBtn');
+
     // Load saved data
-    chrome.storage.local.get(['phoneNumbers', 'message', 'minDelay', 'maxDelay', 'contactLists', 'personalizationEnabled'], (data) => {
+    chrome.storage.local.get(['phoneNumbers', 'message', 'minDelay', 'maxDelay', 'contactLists', 'messageTemplates', 'personalizationEnabled', 'blacklist'], (data) => {
         if (data.phoneNumbers) phoneNumbersInput.value = data.phoneNumbers;
         if (data.message) messageInput.value = data.message;
         if (data.minDelay) minDelayInput.value = data.minDelay;
@@ -51,10 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
             contactLists = data.contactLists;
             renderContactsList();
         }
+        if (data.messageTemplates) {
+            messageTemplates = data.messageTemplates;
+            renderTemplatesList();
+        }
         if (data.personalizationEnabled) {
             personalizeToggle.checked = true;
             isPersonalizationEnabled = true;
             personalizeHelp.style.display = 'block';
+        }
+        if (data.blacklist) {
+            blacklist = data.blacklist;
+            renderBlacklistList();
         }
     });
 
@@ -83,6 +122,29 @@ document.addEventListener('DOMContentLoaded', () => {
             phoneNumbersInput.placeholder = '+919876543210,John,101\n+918765432109,Jane,102';
         } else {
             phoneNumbersInput.placeholder = '+919876543210\n+918765432109';
+        }
+    });
+
+    // Schedule Toggle
+    scheduleToggle.addEventListener('change', () => {
+        isScheduleMode = scheduleToggle.checked;
+        scheduleInputs.style.display = isScheduleMode ? 'block' : 'none';
+
+        // Update button text
+        startBtn.textContent = isScheduleMode ? '📅 Schedule Campaign' : '▶ Start Now';
+
+        // Set minimum date to today and default time
+        if (isScheduleMode) {
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            scheduleDateInput.min = today;
+            scheduleDateInput.value = today;
+
+            // Set default time to 1 hour from now
+            const futureTime = new Date(now.getTime() + 60 * 60 * 1000);
+            const hours = String(futureTime.getHours()).padStart(2, '0');
+            const minutes = String(futureTime.getMinutes()).padStart(2, '0');
+            scheduleTimeInput.value = `${hours}:${minutes}`;
         }
     });
 
@@ -252,6 +314,268 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Templates Panel Toggle
+    templatesBtn.addEventListener('click', () => {
+        templatesPanel.style.display = templatesPanel.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Add Template Modal
+    addTemplateBtn.addEventListener('click', () => {
+        addTemplateModal.style.display = 'flex';
+        templateNameInput.value = '';
+        templateMessageInput.value = '';
+    });
+
+    closeTemplateModal.addEventListener('click', () => {
+        addTemplateModal.style.display = 'none';
+    });
+
+    // Save Message Template
+    saveTemplateBtn.addEventListener('click', () => {
+        const name = templateNameInput.value.trim();
+        const templateMsg = templateMessageInput.value.trim();
+
+        if (!name) {
+            alert('Please enter a template name');
+            return;
+        }
+        if (!templateMsg) {
+            alert('Please enter a message');
+            return;
+        }
+
+        messageTemplates[name] = templateMsg;
+        chrome.storage.local.set({ messageTemplates });
+        renderTemplatesList();
+        addTemplateModal.style.display = 'none';
+    });
+
+    // Render Templates List
+    function renderTemplatesList() {
+        const names = Object.keys(messageTemplates);
+
+        if (names.length === 0) {
+            templatesList.innerHTML = '<div class="no-contacts">No saved templates yet</div>';
+            return;
+        }
+
+        templatesList.innerHTML = names.map(name => {
+            const preview = messageTemplates[name].substring(0, 30) + (messageTemplates[name].length > 30 ? '...' : '');
+            return `
+                <div class="contact-item">
+                    <div>
+                        <span class="contact-name">${name}</span>
+                        <div class="template-preview">${preview}</div>
+                    </div>
+                    <div class="contact-actions">
+                        <button class="btn-use" data-name="${name}">Use</button>
+                        <button class="btn-delete" data-name="${name}">×</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Attach event listeners
+        templatesList.querySelectorAll('.btn-use').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const name = e.target.dataset.name;
+                messageInput.value = messageTemplates[name];
+                chrome.storage.local.set({ message: messageInput.value });
+                templatesPanel.style.display = 'none';
+            });
+        });
+
+        templatesList.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const name = e.target.dataset.name;
+                if (confirm(`Delete "${name}" template?`)) {
+                    delete messageTemplates[name];
+                    chrome.storage.local.set({ messageTemplates });
+                    renderTemplatesList();
+                }
+            });
+        });
+    }
+
+    // Blacklist Panel Toggle
+    blacklistBtn.addEventListener('click', () => {
+        blacklistPanel.style.display = blacklistPanel.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Add to Blacklist Modal
+    addBlacklistBtn.addEventListener('click', () => {
+        addBlacklistModal.style.display = 'flex';
+        blacklistNumbersInput.value = '';
+    });
+
+    closeBlacklistModal.addEventListener('click', () => {
+        addBlacklistModal.style.display = 'none';
+    });
+
+    // Save to Blacklist
+    saveBlacklistBtn.addEventListener('click', () => {
+        const numbers = blacklistNumbersInput.value.trim();
+
+        if (!numbers) {
+            alert('Please enter at least one phone number');
+            return;
+        }
+
+        // Parse and normalize numbers
+        const newNumbers = numbers.split('\n')
+            .map(n => normalizePhoneNumber(n.trim()))
+            .filter(n => n && !blacklist.includes(n));
+
+        if (newNumbers.length === 0) {
+            alert('No new numbers to add (might already be blacklisted)');
+            return;
+        }
+
+        blacklist = [...blacklist, ...newNumbers];
+        chrome.storage.local.set({ blacklist });
+        renderBlacklistList();
+        addBlacklistModal.style.display = 'none';
+
+        alert(`✅ Added ${newNumbers.length} number(s) to blacklist`);
+    });
+
+    // Normalize phone number (remove ALL non-digit characters for comparison)
+    function normalizePhoneNumber(phone) {
+        if (!phone) return '';
+        // First, get just the phone number part (before any comma for CSV data)
+        const phoneOnly = phone.split(',')[0].trim();
+        // Remove ALL non-digit characters for consistent comparison
+        return phoneOnly.replace(/\D/g, '');
+    }
+
+    // Check if a phone number is blacklisted
+    function isBlacklisted(phone) {
+        if (!phone || blacklist.length === 0) return false;
+
+        const normalizedPhone = normalizePhoneNumber(phone);
+        console.log('[Blacklist] Checking:', phone, '→ normalized:', normalizedPhone);
+
+        const result = blacklist.some(blacklistedNum => {
+            const normalizedBlacklisted = normalizePhoneNumber(blacklistedNum);
+
+            // Direct match
+            if (normalizedPhone === normalizedBlacklisted) {
+                console.log('[Blacklist] MATCH (exact):', normalizedPhone, '===', normalizedBlacklisted);
+                return true;
+            }
+
+            // One ends with the other (handles country code differences)
+            // e.g., "919876543210" ends with "9876543210"
+            if (normalizedPhone.length >= 10 && normalizedBlacklisted.length >= 10) {
+                const last10Phone = normalizedPhone.slice(-10);
+                const last10Blacklisted = normalizedBlacklisted.slice(-10);
+                if (last10Phone === last10Blacklisted) {
+                    console.log('[Blacklist] MATCH (last 10 digits):', last10Phone, '===', last10Blacklisted);
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
+        console.log('[Blacklist] Result for', phone, ':', result ? 'BLOCKED' : 'allowed');
+        return result;
+    }
+
+    // Render Blacklist
+    function renderBlacklistList() {
+        if (blacklist.length === 0) {
+            blacklistList.innerHTML = '<div class="no-contacts">No blacklisted numbers yet</div>';
+            return;
+        }
+
+        blacklistList.innerHTML = blacklist.map((number, index) => `
+            <div class="blacklist-item">
+                <span class="blacklist-number">${number}</span>
+                <button class="btn-remove-blacklist" data-index="${index}">Remove</button>
+            </div>
+        `).join('');
+
+        // Attach event listeners for remove buttons
+        blacklistList.querySelectorAll('.btn-remove-blacklist').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.target.dataset.index);
+                const number = blacklist[index];
+                if (confirm(`Remove ${number} from blacklist?`)) {
+                    blacklist.splice(index, 1);
+                    chrome.storage.local.set({ blacklist });
+                    renderBlacklistList();
+                }
+            });
+        });
+    }
+
+    // Helper Functions for Scheduling
+    async function ensureWhatsAppWebOpen() {
+        console.log('[ensureWhatsAppWebOpen] Starting...');
+
+        try {
+            const tabs = await chrome.tabs.query({});
+            console.log('[ensureWhatsAppWebOpen] Found', tabs.length, 'tabs');
+
+            let whatsappTab = tabs.find(tab => tab.url && tab.url.includes('web.whatsapp.com'));
+
+            if (!whatsappTab) {
+                console.log('[ensureWhatsAppWebOpen] No WhatsApp tab found, creating new one...');
+                whatsappTab = await chrome.tabs.create({
+                    url: 'https://web.whatsapp.com',
+                    active: true
+                });
+
+                showStatus();
+                statusMessage.textContent = '🌐 Opening WhatsApp Web... (Scan QR if needed)';
+
+                // Wait for page to load
+                await new Promise(resolve => setTimeout(resolve, 8000));
+
+                // Refresh tab info after waiting
+                const updatedTabs = await chrome.tabs.query({ url: 'https://web.whatsapp.com/*' });
+                if (updatedTabs.length > 0) {
+                    whatsappTab = updatedTabs[0];
+                }
+            } else {
+                console.log('[ensureWhatsAppWebOpen] Found existing WhatsApp tab:', whatsappTab.id);
+                await chrome.tabs.update(whatsappTab.id, { active: true });
+                await chrome.windows.update(whatsappTab.windowId, { focused: true });
+            }
+
+            console.log('[ensureWhatsAppWebOpen] Returning tab:', whatsappTab?.id);
+            return whatsappTab;
+        } catch (error) {
+            console.error('[ensureWhatsAppWebOpen] Error:', error);
+            throw error;
+        }
+    }
+
+    function startScheduledCountdown(scheduledDateTime, onComplete) {
+        if (scheduleTimer) {
+            clearInterval(scheduleTimer);
+        }
+
+        scheduleTimer = setInterval(() => {
+            const remaining = scheduledDateTime.getTime() - Date.now();
+
+            if (remaining <= 0) {
+                clearInterval(scheduleTimer);
+                scheduleTimer = null;
+                onComplete();
+                return;
+            }
+
+            const hours = Math.floor(remaining / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+            statusMessage.textContent = `⏰ Scheduled - Starting in: ${hours}h ${minutes}m ${seconds}s`;
+            progressFill.style.width = '0%';
+        }, 1000);
+    }
+
     // Start Sending
     startBtn.addEventListener('click', async () => {
         const rawLines = phoneNumbersInput.value.trim().split('\n').filter(num => num.trim());
@@ -274,6 +598,51 @@ document.addEventListener('DOMContentLoaded', () => {
         if (minDelay > maxDelay) {
             showError('Min delay cannot exceed max delay');
             return;
+        }
+
+        // Schedule Mode - Set up countdown
+        if (isScheduleMode) {
+            const scheduleDate = scheduleDateInput.value;
+            const scheduleTime = scheduleTimeInput.value;
+
+            if (!scheduleDate || !scheduleTime) {
+                showError('Please set date and time');
+                return;
+            }
+
+            const scheduledDateTime = new Date(`${scheduleDate}T${scheduleTime}`);
+            const now = new Date();
+
+            if (scheduledDateTime <= now) {
+                showError('Scheduled time must be in the future!');
+                return;
+            }
+
+            // Setup UI for scheduled mode
+            showStatus();
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            hideError();
+
+            // Start countdown
+            startScheduledCountdown(scheduledDateTime, () => {
+                // When countdown completes, reset and trigger send
+                isScheduleMode = false;
+                scheduleToggle.checked = false;
+                scheduleInputs.style.display = 'none';
+                startBtn.textContent = '▶ Start Now';
+
+                // Re-enable button before clicking
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+
+                // Trigger actual sending
+                startBtn.click();
+            });
+
+            const timeStr = scheduledDateTime.toLocaleString();
+            alert(`✅ Campaign scheduled for ${timeStr}\n\n⚠️ Keep this popup open!`);
+            return; // Don't send now
         }
 
         // Parse data based on personalization mode
@@ -325,38 +694,86 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
         }
 
-        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        // Filter out blacklisted numbers
+        console.log('[Blacklist] Current blacklist:', blacklist);
+        console.log('[Blacklist] Contacts to check:', contactsData.map(c => c.phoneNumber));
 
-        if (!tab.url || !tab.url.includes('web.whatsapp.com')) {
-            showError('Please open WhatsApp Web first');
-            chrome.tabs.create({ url: 'https://web.whatsapp.com' });
+        const originalCount = contactsData.length;
+        const filteredContactsData = contactsData.filter(contact => !isBlacklisted(contact.phoneNumber));
+        const skippedCount = originalCount - filteredContactsData.length;
+
+        console.log('[Blacklist] Filtered result:', filteredContactsData.length, 'remaining,', skippedCount, 'skipped');
+
+        if (filteredContactsData.length === 0) {
+            showError('All contacts are blacklisted! No messages to send.');
             return;
         }
 
-        hideError();
-        showStatus();
-        isRunning = true;
-        startBtn.disabled = true;
-        stopBtn.disabled = false;
+        // Log if some contacts were skipped (no blocking confirmation)
+        if (skippedCount > 0) {
+            console.log(`[Blacklist] Skipping ${skippedCount} blacklisted number(s), sending to ${filteredContactsData.length} contact(s)`);
+            // Show in debug log instead of blocking popup
+            addLog(`🚫 Skipping ${skippedCount} blacklisted number(s)`, 'info');
+        }
 
         try {
+            console.log('[Sending] Opening WhatsApp Web...');
+
+            // Auto-open WhatsApp Web if needed
+            const tab = await ensureWhatsAppWebOpen();
+
+            console.log('[Sending] Tab obtained:', tab);
+
+            if (!tab || !tab.id) {
+                showError('Error: Could not open WhatsApp Web tab');
+                console.error('[Sending] No tab returned from ensureWhatsAppWebOpen');
+                return;
+            }
+
+            hideError();
+            showStatus();
+            isRunning = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+
+            // Log skipped contacts info
+            if (skippedCount > 0) {
+                addLog(`🚫 Skipped ${skippedCount} blacklisted number(s)`, 'info');
+            }
+
+            console.log('[Sending] Sending message to content script...');
+            addLog('Starting to send messages...', 'info');
+
             await chrome.tabs.sendMessage(tab.id, {
                 action: 'startSending',
-                contactsData: contactsData,
+                contactsData: filteredContactsData,
                 messageTemplate: message,
                 minDelay: minDelay * 1000,
                 maxDelay: maxDelay * 1000,
                 isPersonalized: isPersonalizationEnabled
             });
+
+            console.log('[Sending] Message sent to content script successfully');
+
+            // Close popup after a short delay
             setTimeout(() => window.close(), 500);
+
         } catch (error) {
-            showError('Error: Please refresh WhatsApp Web');
+            console.error('[Sending] Error:', error);
+            showError('Error: Please refresh WhatsApp Web and try again');
+            addLog('Error: ' + error.message, 'error');
             resetUI();
         }
     });
 
     // Stop
     stopBtn.addEventListener('click', async () => {
+        // Cancel scheduled countdown if running
+        if (scheduleTimer) {
+            clearInterval(scheduleTimer);
+            scheduleTimer = null;
+        }
+
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
         if (tab && tab.url && tab.url.includes('web.whatsapp.com')) {
             chrome.tabs.sendMessage(tab.id, { action: 'stopSending' });

@@ -6,7 +6,10 @@ A Chrome extension to automate sending WhatsApp messages to multiple contacts wi
 
 ✨ **Easy to Use**: Simple and intuitive interface  
 📱 **Multiple Contacts**: Send messages to multiple phone numbers  
-📂 **CSV Import with Auto-Variables**: Upload CSV, column names become `{variables}` (NEW in v3.3!)  
+⏰ **Message Scheduling**: Schedule campaigns for future sending with countdown timer (NEW in v3.5!)  
+🌐 **Auto-Open WhatsApp Web**: Automatically opens WhatsApp Web if not already open (NEW in v3.5!)  
+📝 **Message Templates**: Save and reuse frequently used messages  
+📂 **CSV Import with Auto-Variables**: Upload CSV, column names become `{variables}`  
 🎯 **Dynamic Personalization**: Send customized messages with variables  
 📋 **Contact Lists**: Save and reuse contact groups  
 ⏱️ **Custom Delays**: Set random time gaps between messages (e.g., 2-5 seconds)  
@@ -145,6 +148,35 @@ Save frequently used contact groups for quick access!
 - "VIP Clients" (with names and order history)
 - "Event Attendees" (with table numbers and times)
 
+### 📝 Message Templates
+
+Save frequently used messages and never type the same thing twice!
+
+1. **Click "📝 Templates"**
+   - A panel will appear showing your saved templates
+
+2. **Create a New Template**
+   - Click "+ New Template"
+   - Enter a name (e.g., "Order Confirmation", "Event Invite", "Follow-up")
+   - Write your message (can include {variables}!)
+   ```
+   Hi {name}, your order #{orderId} is confirmed! Expected delivery: {date}
+   ```
+   - Click "💾 Save Template"
+
+3. **Use a Saved Template**
+   - Click "Use" next to any template
+   - Message will be automatically filled
+   - Works perfectly with personalization!
+
+4. **Delete a Template**
+   - Click the "×" button next to any template
+
+**💡 Pro Tips:**
+- Create templates for different campaigns (orders, events, reminders)
+- Use {variables} in templates for maximum flexibility
+- Templates work seamlessly with Contact Lists and CSV Import
+
 
 ## Important Notes
 
@@ -200,9 +232,24 @@ Save frequently used contact groups for quick access!
 
 ## Version History
 
-**Current Version**: 3.3.0
+**Current Version**: 3.5.0
 
-### v3.3.0 (Latest)
+### v3.5.0 (Latest)
+- ⏰ NEW: Message Scheduling with countdown timer
+- 📅 Schedule campaigns for future sending
+- 🌐 Auto-Open WhatsApp Web if not already open
+- ⏲️ Real-time countdown display
+- 🛑 Cancel scheduled sends anytime
+- 💡 Smart validation prevents past scheduling
+
+### v3.4.0
+- 📝 NEW: Message Templates
+- 💾 Save and reuse frequently used messages
+- 🔄 Templates work with personalization variables
+- 📋 Quick access via "📝 Templates" button
+- ✨ Preview snippets in templates list
+
+### v3.3.0
 - 📂 NEW: CSV Import with Auto-Variable Detection
 - 🎯 Column names automatically become `{variables}`
 - 📊 Visual CSV info display with stats

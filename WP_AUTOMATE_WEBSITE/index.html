@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WP Automate - The Ultimate WhatsApp Automation Tool</title>
+    <meta name="description"
+        content="Boost your productivity with message scheduling, templates, and bulk sending for WhatsApp. The privacy-focused Chrome Extension.">
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">WP <span class="accent">Automate</span></a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#demo">How it Works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+                <a href="#pricing" class="btn btn-primary nav-cta">Get Lifetime Access</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="badge">🚀 v3.5.0 Now Live: Scheduling & Bulk Messaging!</div>
+                <h1>The Ultimate <br><span class="gradient-text">WhatsApp Bulk Sender</span></h1>
+                <p class="hero-sub">Send personalized bulk messages to thousands of contacts in minutes. Includes
+                    <strong>Anti-Ban Protection</strong>, <strong>Smart Scheduling</strong>, <strong>Templates</strong>,
+                    <strong>Contact Saving</strong>, and <strong>CSV Import</strong>.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#pricing" class="btn btn-primary btn-lg">
+                        <i class="fab fa-chrome"></i> Add to Chrome
+                    </a>
+                    <a href="#features" class="btn btn-secondary btn-lg">
+                        View All Features
+                    </a>
+                </div>
+                <div class="trust-badge">
+                    <span><i class="fas fa-shield-alt"></i> Anti-Ban Technology</span>
+                    <span><i class="fas fa-clock"></i> Smart Scheduling</span>
+                    <span><i class="fas fa-magic"></i> Personalization</span>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-ui main-ui">
+                    <!-- Mockup of extension UI -->
+                    <div class="mockup-header">
+                        <div class="dots"><span></span><span></span><span></span></div>
+                        <span>PRO</span>
+                    </div>
+                    <div class="mockup-body">
+                        <div class="mockup-row">
+                            <i class="fas fa-clock accent-icon"></i>
+                            <span>Campaign Scheduled: 10:00 AM</span>
+                        </div>
+                        <div class="mockup-row success">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Sent to 150 contacts</span>
+                        </div>
+                        <div class="mockup-progress">
+                            <div class="bar" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-element float-1">
+                    <i class="fas fa-file-csv"></i> CSV Import
+                </div>
+                <div class="floating-element float-2">
+                    <i class="fas fa-magic"></i> {Name} Personalization
+                </div>
+                <div class="effects-glow"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="features section-padding">
+        <div class="container">
+            <div class="section-header">
+                <h2>Everything You Need</h2>
+                <p>Powerful features designed to save you hours every week.</p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="icon-box">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Smart Scheduling</h3>
+                    <p>Set it and forget it. Schedule your campaigns to run at specific dates and times automatically.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="icon-box">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Message Templates</h3>
+                    <p>Save frequently used messages. Reuse them instantly for different campaigns with one click.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="icon-box">
+                        <i class="fas fa-user-tag"></i>
+                    </div>
+                    <h3>Dynamic Personalization</h3>
+                    <p>Send "Hi {Name}" instead of generic hellos. Use custom variables from your CSV files.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <div class="icon-box">
+                        <i class="fas fa-file-csv"></i>
+                    </div>
+                    <h3>CSV Bulk Import</h3>
+                    <p>Upload thousands of contacts via CSV. Auto-detects columns for easy variable mapping.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card">
+                    <div class="icon-box">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Anti-Ban Protection</h3>
+                    <p>Advanced human-like behavior simulation with randomized time delays to keep your designated
+                        number safe.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card">
+                    <div class="icon-box">
+                        <i class="fas fa-address-book"></i>
+                    </div>
+                    <h3>Contact Lists</h3>
+                    <p>Save contact groups (e.g., "VIP Clients") for instant reuse. No need to re-upload CSVs every
+                        time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comprehensive Modules Breakdown -->
+    <section class="modules-overview section-padding" style="background: var(--bg-card);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Powerful Modules for Every Task</h2>
+                <p>A closer look at the tools that will transform your business communication.</p>
+            </div>
+
+            <div class="modules-list">
+                <!-- Module 1 -->
+                <div class="module-item">
+                    <div class="module-content">
+                        <h3><i class="fas fa-paper-plane accent"></i> Bulk Messaging Engine</h3>
+                        <p>The core of WP Automate. Send thousands of messages in one click. Perfect for marketing
+                            campaigns, announcements, and updates.</p>
+                        <ul class="check-list-sm">
+                            <li><i class="fas fa-check"></i> Unlimited contacts</li>
+                            <li><i class="fas fa-check"></i> Real-time progress tracking</li>
+                            <li><i class="fas fa-check"></i> Pause and resume anytime</li>
+                        </ul>
+                    </div>
+                    <div class="module-visual">
+                        <img src="images/bulk.png" alt="Bulk Messaging Interface">
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="module-item reverse">
+                    <div class="module-content">
+                        <h3><i class="fas fa-shield-alt accent"></i> Advanced Anti-Ban System</h3>
+                        <p>Protect your number with our proprietary safety algorithms. We simulate human behavior to
+                            keep you under the radar.</p>
+                        <ul class="check-list-sm">
+                            <li><i class="fas fa-check"></i> Randomized delay intervals</li>
+                            <li><i class="fas fa-check"></i> Human-like typing simulation</li>
+                            <li><i class="fas fa-check"></i> Safe sending limits</li>
+                        </ul>
+                    </div>
+                    <div class="module-visual">
+                        <img src="images/antiban.png" alt="Anti-Ban Settings">
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="module-item">
+                    <div class="module-content">
+                        <h3><i class="fas fa-clock accent"></i> Smart Scheduling</h3>
+                        <p>Don't be tied to your desk. Plan your campaigns ahead of time and let WP Automate handle the
+                            delivery.</p>
+                        <ul class="check-list-sm">
+                            <li><i class="fas fa-check"></i> Date & Time picker</li>
+                            <li><i class="fas fa-check"></i> Visual countdown timer</li>
+                            <li><i class="fas fa-check"></i> Auto-triggers at set time</li>
+                        </ul>
+                    </div>
+                    <div class="module-visual">
+                        <img src="images/schedule.png" alt="Scheduling UI">
+                    </div>
+                </div>
+
+                <!-- Module 4 -->
+                <div class="module-item reverse">
+                    <div class="module-content">
+                        <h3><i class="fas fa-file-csv accent"></i> Data & Personalization</h3>
+                        <p>Make every message count. Use data from your Excel or CSV files to create deeply personalized
+                            experiences.</p>
+                        <ul class="check-list-sm">
+                            <li><i class="fas fa-check"></i> Auto-detect CSV columns</li>
+                            <li><i class="fas fa-check"></i> Use variables like {Name}, {OrderID}</li>
+                            <li><i class="fas fa-check"></i> Save contact lists for later</li>
+                        </ul>
+                    </div>
+                    <div class="module-visual">
+                        <img src="images/csv.png" alt="CSV Import Feature">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison / Why Us -->
+    <section class="comparison section-padding">
+        <div class="container">
+            <div class="comparison-wrapper">
+                <div class="comparison-content">
+                    <h2>Why Professionals Choose WP Automate</h2>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check"></i> <strong>No Monthly Subscriptions</strong> - Pay once, use
+                            forever.</li>
+                        <li><i class="fas fa-check"></i> <strong>Native Integration</strong> - Works directly inside
+                            your browser.</li>
+                        <li><i class="fas fa-check"></i> <strong>Anti-Ban Technology</strong> - Randomized delays mimic
+                            human behavior.</li>
+                        <li><i class="fas fa-check"></i> <strong>Continuous Updates</strong> - New features added
+                            regularly (like Scheduling v3.5!).</li>
+                    </ul>
+                </div>
+                <div class="comparison-visual">
+                    <div class="stat-card">
+                        <span class="number">10h+</span>
+                        <span class="label">Saved Weekly</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="number">100%</span>
+                        <span class="label">Delivery Rate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing section-padding">
+        <div class="container">
+            <div class="section-header">
+                <h2>Launch Special Offer</h2>
+                <p>Get unlimited access for a fraction of the cost. Limited time only.</p>
+            </div>
+
+            <div class="pricing-container">
+                <!-- Standard Plan (Comparison) -->
+                <div class="pricing-card standard">
+                    <div class="card-header">
+                        <h3>Standard Market Price</h3>
+                        <p>What others charge</p>
+                    </div>
+                    <div class="price">
+                        <span class="currency">$</span>12<span class="period">/month</span>
+                    </div>
+                    <ul class="features-list">
+                        <li>Annual cost: $144</li>
+                        <li>Monthly payments</li>
+                        <li>Limited features</li>
+                        <li>No priority support</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline disabled">Comparison Only</a>
+                </div>
+
+                <!-- Lifetime Deal (Hero) -->
+                <div class="pricing-card premium featured">
+                    <div class="offer-badge">🚀 LAUNCH OFFER</div>
+                    <div class="card-header">
+                        <h3>LIFETIME DEAL</h3>
+                        <p>Limited copies available</p>
+                    </div>
+                    <div class="price">
+                        <span class="old-price">$99.00</span>
+                        <span class="currency">$</span>29<span class="period">/once</span>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> <strong>One-time payment</strong></li>
+                        <li><i class="fas fa-check"></i> All Pro Features Included</li>
+                        <li><i class="fas fa-check"></i> Message Scheduling</li>
+                        <li><i class="fas fa-check"></i> Unlimited Templates</li>
+                        <li><i class="fas fa-check"></i> CSV Import & Export</li>
+                        <li><i class="fas fa-check"></i> Priority Support</li>
+                        <li><i class="fas fa-check"></i> <strong>Lifetime Updates</strong></li>
+                    </ul>
+                    <a href="#" class="btn btn-primary btn-block glow-effect">Get Lifetime Access Now</a>
+                    <p class="guarantee"><i class="fas fa-lock"></i> 30-Day Money Back Guarantee</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq section-padding">
+        <div class="container narrow-container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is it safe for my WhatsApp account?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! We prioritize safety. The extension uses browser-native inputs and random time delays
+                        between messages to mimic human behavior, significantly reducing the risk of being flagged.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Do I need to pay monthly?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Not with this offer! If you buy the Lifetime Deal now for $29, you pay once and never again.
+                        Future users might be on a subscription, but your account will be grandfathered in.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Does it work on Mac and Windows?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, it works on any computer (Mac, Windows, Linux) that runs Google Chrome or Chromium-based
+                        browsers (like Brave or Edge).
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I send images or attachments?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Currently, the focus is on personalized text messages for maximum delivery rates. Attachment
+                        support is on our roadmap for v4.0!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-col">
+                <a href="#" class="logo">WP <span class="accent">Automate</span></a>
+                <p>The smartest way to manage your WhatsApp communications.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#">Roadmap</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Install</h4>
+                <a href="#" class="btn btn-sm btn-outline"><i class="fab fa-chrome"></i> Chrome Store</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 WP Automate Extension. Not affiliated with WhatsApp Inc.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
