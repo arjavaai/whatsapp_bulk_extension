@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WP Automate - The Ultimate WhatsApp Automation Tool</title>
+    <title>Sendora - Professional WhatsApp Bulk Messaging Tool</title>
     <meta name="description"
-        content="Boost your productivity with message scheduling, templates, and bulk sending for WhatsApp. The privacy-focused Chrome Extension.">
+        content="Send personalized bulk WhatsApp messages at scale. Includes scheduling, templates, CSV import, and anti-ban protection. One-time $29 lifetime access.">
     <link rel="stylesheet" href="style.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap"
@@ -19,7 +19,10 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="#" class="logo">WP <span class="accent">Automate</span></a>
+            <a href="#" class="logo">
+                <span class="logo-icon"><i class="fas fa-paper-plane"></i></span>
+                Sendora
+            </a>
             <div class="nav-links">
                 <a href="#features">Features</a>
                 <a href="#demo">How it Works</a>
@@ -37,11 +40,11 @@
     <header class="hero">
         <div class="container hero-container">
             <div class="hero-content">
-                <div class="badge">🚀 v3.5.0 Now Live: Scheduling & Bulk Messaging!</div>
-                <h1>The Ultimate <br><span class="gradient-text">WhatsApp Bulk Sender</span></h1>
+                <div class="badge">🚀 v4.0 Now Live: New Modern UI + Blacklist!</div>
+                <h1>Professional<br><span class="gradient-text">WhatsApp Bulk Sender</span></h1>
                 <p class="hero-sub">Send personalized bulk messages to thousands of contacts in minutes. Includes
                     <strong>Anti-Ban Protection</strong>, <strong>Smart Scheduling</strong>, <strong>Templates</strong>,
-                    <strong>Contact Saving</strong>, and <strong>CSV Import</strong>.
+                    <strong>Blacklist</strong>, and <strong>CSV Import</strong>.
                 </p>
                 <div class="hero-buttons">
                     <a href="#pricing" class="btn btn-primary btn-lg">
@@ -274,50 +277,112 @@
         <div class="container">
             <div class="section-header">
                 <h2>Launch Special Offer</h2>
-                <p>Get unlimited access for a fraction of the cost. Limited time only.</p>
+                <p>Get unlimited access for a fraction of the cost. <strong style="color: #FF5252;">Price increases to
+                        $49 soon!</strong></p>
+            </div>
+
+            <!-- Urgency Banner -->
+            <div class="urgency-banner">
+                <div class="urgency-content">
+                    <span class="urgency-icon">⏰</span>
+                    <span class="urgency-text">Launch Price Ends In:</span>
+                    <div class="countdown" id="countdown">
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="days">07</span>
+                            <span class="countdown-label">Days</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="hours">23</span>
+                            <span class="countdown-label">Hours</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="minutes">59</span>
+                            <span class="countdown-label">Mins</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="seconds">59</span>
+                            <span class="countdown-label">Secs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Savings Comparison -->
+            <div class="savings-comparison">
+                <div class="savings-card">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="savings-content">
+                        <span class="savings-amount">Save $300+/year</span>
+                        <span class="savings-desc">vs subscription-based competitors</span>
+                    </div>
+                </div>
+                <div class="savings-card">
+                    <i class="fas fa-infinity"></i>
+                    <div class="savings-content">
+                        <span class="savings-amount">Lifetime Access</span>
+                        <span class="savings-desc">Pay once, use forever</span>
+                    </div>
+                </div>
+                <div class="savings-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <div class="savings-content">
+                        <span class="savings-amount">30-Day Guarantee</span>
+                        <span class="savings-desc">Full refund, no questions</span>
+                    </div>
+                </div>
             </div>
 
             <div class="pricing-container">
                 <!-- Standard Plan (Comparison) -->
                 <div class="pricing-card standard">
                     <div class="card-header">
-                        <h3>Standard Market Price</h3>
-                        <p>What others charge</p>
+                        <h3>Typical Competitor Price</h3>
+                        <p>What others charge monthly</p>
                     </div>
                     <div class="price">
-                        <span class="currency">$</span>12<span class="period">/month</span>
+                        <span class="currency">$</span>25<span class="period">/month</span>
                     </div>
                     <ul class="features-list">
-                        <li>Annual cost: $144</li>
-                        <li>Monthly payments</li>
-                        <li>Limited features</li>
-                        <li>No priority support</li>
+                        <li><i class="fas fa-times" style="color: #FF5252;"></i> Annual cost: <strong>$300/year</strong>
+                        </li>
+                        <li><i class="fas fa-times" style="color: #FF5252;"></i> Monthly recurring payments</li>
+                        <li><i class="fas fa-times" style="color: #FF5252;"></i> Cancel anytime = lose access</li>
+                        <li><i class="fas fa-times" style="color: #FF5252;"></i> Basic support only</li>
                     </ul>
-                    <a href="#" class="btn btn-outline disabled">Comparison Only</a>
+                    <a href="#" class="btn btn-outline disabled">Not This One</a>
                 </div>
 
                 <!-- Lifetime Deal (Hero) -->
                 <div class="pricing-card premium featured">
-                    <div class="offer-badge">🚀 LAUNCH OFFER</div>
+                    <div class="offer-badge">🔥 LIMITED TIME - 70% OFF</div>
                     <div class="card-header">
                         <h3>LIFETIME DEAL</h3>
-                        <p>Limited copies available</p>
+                        <p>Only <span id="copies-left">47</span> copies at this price</p>
                     </div>
                     <div class="price">
                         <span class="old-price">$99.00</span>
                         <span class="currency">$</span>29<span class="period">/once</span>
                     </div>
+                    <div class="price-comparison-tag">
+                        <i class="fas fa-arrow-down"></i> Save $300+ vs competitors!
+                    </div>
                     <ul class="features-list">
-                        <li><i class="fas fa-check"></i> <strong>One-time payment</strong></li>
+                        <li><i class="fas fa-check"></i> <strong>One-time payment - FOREVER</strong></li>
                         <li><i class="fas fa-check"></i> All Pro Features Included</li>
                         <li><i class="fas fa-check"></i> Message Scheduling</li>
-                        <li><i class="fas fa-check"></i> Unlimited Templates</li>
-                        <li><i class="fas fa-check"></i> CSV Import & Export</li>
-                        <li><i class="fas fa-check"></i> Priority Support</li>
-                        <li><i class="fas fa-check"></i> <strong>Lifetime Updates</strong></li>
+                        <li><i class="fas fa-check"></i> Unlimited Templates & Contacts</li>
+                        <li><i class="fas fa-check"></i> CSV Import & Personalization</li>
+                        <li><i class="fas fa-check"></i> Anti-Ban Protection</li>
+                        <li><i class="fas fa-check"></i> Priority Email Support</li>
+                        <li><i class="fas fa-check"></i> <strong>FREE Lifetime Updates</strong></li>
                     </ul>
-                    <a href="#" class="btn btn-primary btn-block glow-effect">Get Lifetime Access Now</a>
-                    <p class="guarantee"><i class="fas fa-lock"></i> 30-Day Money Back Guarantee</p>
+                    <a href="#" class="btn btn-primary btn-block glow-effect">
+                        <i class="fas fa-bolt"></i> Get Lifetime Access - $29
+                    </a>
+                    <p class="guarantee"><i class="fas fa-lock"></i> 30-Day Money Back Guarantee • Secure Payment</p>
+                    <div class="future-price-warning">
+                        ⚠️ Price will increase to <strong>$49</strong> after launch
+                    </div>
                 </div>
             </div>
         </div>
@@ -378,8 +443,11 @@
     <footer>
         <div class="container footer-container">
             <div class="footer-col">
-                <a href="#" class="logo">WP <span class="accent">Automate</span></a>
-                <p>The smartest way to manage your WhatsApp communications.</p>
+                <a href="#" class="logo">
+                    <span class="logo-icon"><i class="fas fa-paper-plane"></i></span>
+                    Sendora
+                </a>
+                <p>Professional WhatsApp bulk messaging made simple.</p>
             </div>
             <div class="footer-col">
                 <h4>Product</h4>
@@ -399,7 +467,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 WP Automate Extension. Not affiliated with WhatsApp Inc.</p>
+            <p>&copy; 2025 Sendora. Not affiliated with WhatsApp Inc.</p>
         </div>
     </footer>
 

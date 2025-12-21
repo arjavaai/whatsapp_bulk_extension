@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "WhatsApp Message Automator",
-    "version": "3.6.0",
-    "description": "Automate WhatsApp messages to multiple contacts with customizable time delays",
+    "name": "Sendora - WhatsApp Bulk Sender",
+    "version": "4.0.0",
+    "description": "Professional WhatsApp automation: bulk messaging, scheduling, templates, personalization, and anti-ban protection.",
     "permissions": [
         "activeTab",
         "scripting",

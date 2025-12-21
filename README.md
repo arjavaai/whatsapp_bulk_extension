@@ -1,21 +1,20 @@
-# WhatsApp Message Automator
+# ✈️ Sendora - Professional WhatsApp Bulk Sender
 
-A Chrome extension to automate sending WhatsApp messages to multiple contacts with customizable time delays and dynamic personalization.
+A powerful Chrome extension for automating WhatsApp messages with personalization, scheduling, templates, blacklist management, and anti-ban protection.
 
-## Features
+## ✨ Features
 
-✨ **Easy to Use**: Simple and intuitive interface  
-📱 **Multiple Contacts**: Send messages to multiple phone numbers  
-⏰ **Message Scheduling**: Schedule campaigns for future sending with countdown timer (NEW in v3.5!)  
-🌐 **Auto-Open WhatsApp Web**: Automatically opens WhatsApp Web if not already open (NEW in v3.5!)  
+🎯 **Bulk Messaging**: Send to thousands of contacts with one click  
+📱 **Smart Personalization**: Use `{name}`, `{orderId}` variables from CSV  
+⏰ **Message Scheduling**: Set campaigns for future sending  
 📝 **Message Templates**: Save and reuse frequently used messages  
-📂 **CSV Import with Auto-Variables**: Upload CSV, column names become `{variables}`  
-🎯 **Dynamic Personalization**: Send customized messages with variables  
-📋 **Contact Lists**: Save and reuse contact groups  
-⏱️ **Custom Delays**: Set random time gaps between messages (e.g., 2-5 seconds)  
-📊 **Progress Tracking**: Real-time progress updates with visual indicators  
-🎨 **Modern UI**: Beautiful, WhatsApp-themed interface  
-💾 **Auto-Save**: Automatically saves your inputs for next time  
+📂 **CSV Import**: Auto-detect columns as variables  
+👥 **Contact Lists**: Save groups for quick reuse  
+🚫 **Blacklist/DND**: Auto-skip unwanted numbers  
+🛡️ **Anti-Ban Protection**: Random delays mimic human behavior  
+📊 **Real-time Progress**: Live tracking with visual indicators  
+💾 **Auto-Save**: Never lose your work  
+🎨 **Modern Dark UI**: Beautiful, professional interface  
 
 ## Installation
 
@@ -232,9 +231,19 @@ Save frequently used messages and never type the same thing twice!
 
 ## Version History
 
-**Current Version**: 3.5.0
+**Current Version**: 4.0.0
 
-### v3.5.0 (Latest)
+### v4.0.0 - Sendora Rebrand (Latest)
+- 🎨 Complete UI redesign with modern dark theme
+- ✈️ New brand identity: Sendora
+- 🚫 NEW: Blacklist/DND management
+- 🎯 Auto-skip blacklisted numbers
+- 💎 Premium visual styling with gradients
+- 📱 Improved toolbar layout
+- 🔧 Enhanced error handling
+- 📊 Better recipient count display
+
+### v3.5.0
 - ⏰ NEW: Message Scheduling with countdown timer
 - 📅 Schedule campaigns for future sending
 - 🌐 Auto-Open WhatsApp Web if not already open
